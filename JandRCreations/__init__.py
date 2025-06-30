@@ -2,6 +2,7 @@ import os
 from flask import Flask, url_for
 
 def create_app(test_config=None) :
+
     app = Flask(__name__, instance_relative_config=True)
 
     app.config.from_mapping(
@@ -19,13 +20,15 @@ def create_app(test_config=None) :
     except OSError :
         pass
 
-    app.add_url_rule('/', endpoint='index')
-
     from . import db
     db.init_app(app)
 
+    from . import products
+    app.register_blueprint(products.bp)
 
-    app.add_url_rule('/', endpoint='index')
+    #app.add_url_rule('/', endpoint='index')
+    
+    
     #@app.route("/")
     #def route_to_index() :
     #    app.redirect(url_for('index')) #if I have a index function defined somewhwere this will make it so 'app/' url will take us to 'app/index' url

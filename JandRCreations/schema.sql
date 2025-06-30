@@ -16,13 +16,12 @@ CREATE TABLE prod_type (
 
 CREATE TABLE prod (
     prod_id INTEGER PRIMARY KEY AUTOINCREMENT,
-    prod_type_id INTEGER
+    prod_type_id INTEGER,
     prod_name TEXT NOT NULL,
     prod_description TEXT NOT NULL,
     prod_price REAL NOT NULL,
     prod_cost REAL NOT NULL,
     prod_sold BOOLEAN NOT NULL,
-    prod_path TEXT,
     FOREIGN KEY (prod_type_id) REFERENCES prod_type (prod_type_id)
 );
 
@@ -32,3 +31,5 @@ INSERT INTO prod_design (prod_design) VALUES ('premade');
 INSERT INTO prod_type (prod_type, prod_design_id) VALUES ('wreath', 1);
 INSERT INTO prod_type (prod_type, prod_design_id) VALUES ('bracelet', 1);
 INSERT INTO prod_type (prod_type, prod_design_id) VALUES ('wood', 1);
+
+INSERT INTO prod (prod_type_id, prod_name, prod_description, prod_price, prod_cost, prod_sold) VALUES ('1', 'Hol_Wreath', 'A holiday wreath', 5, 5, FALSE);
