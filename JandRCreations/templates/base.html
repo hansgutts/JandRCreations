@@ -1,12 +1,14 @@
 <!doctype html>
 <title>{% block title%}{% endblock %}</title>
-<link rel="stylesheet" href="{{ url_for('static', filename = 'reset.css') }}">
-<link rel="stylesheet" href="{{ url_for('static', filename = 'base.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename = 'css/reset.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename = 'css/base.css') }}">
 <nav>
-    <h1>JandRCreations</h1>
-    <ul>
-        <li><a href="{{url_for('contact')}}">Contact Us</a></li>
-    </ul>
+    <div id="top_nav">
+        <div id="logo">
+            <a href="{{url_for('index')}}"><img src="{{ url_for('static', filename = 'images/JandRLogo.png')}}" id="logoimg"></a>
+        </div>
+        <div class="nav_sections"><a href="{{ url_for('other.contact') }}">Contact Us</a></div>
+    </div>
 </nav>
 <section class="content">
     <header>

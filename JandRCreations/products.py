@@ -1,5 +1,5 @@
 from flask import (
-    Blueprint, flash, g, redirect, render_template, request, session, url_for
+    Blueprint, flash, g, redirect, render_template, request, session, url_for, abort
 )
 
 from werkzeug.security import check_password_hash, generate_password_hash
@@ -15,14 +15,16 @@ bp = Blueprint('products', __name__)
 #there are three views I want to be able to distinguish
 #the home page should default to viewing everything except individual products - I want a section for each design, and a subsection for each type
 
-@bp.route('/') #the home page
-def index() :  #get every design and every type and send those through to the index page
-    return "Hello World"
+
 
 #the design view should show only types of products within that design - right now either custom made or premade
 @bp.route('/<design>/view_design') #look at a specific design a
 def view_design(design) : #we need to get the specific designs types, if it exists. ow send a 404 error
-    return get_design(design)['prod_design']
+    design = get_design(design)
+    if design is not None :
+        return render_template('products/design.html')
+    else :
+        abort(404)
 
 #the type view should show only types of products within that type - so wreaths, bracelets, etc
 @bp.route('/<type>/view_type') #look at a specific type of product

@@ -4,6 +4,7 @@
 
 import sqlite3
 from JandRCreations.db import get_db
+from flask import flash
 
 def get_design(prod_design) :
     db = get_db()
@@ -15,6 +16,7 @@ def get_design(prod_design) :
         ).fetchone()
         return design
     except Exception as e :
+        flash(e)
         return None
 
 def get_type(prod_type) :
@@ -26,6 +28,7 @@ def get_type(prod_type) :
         ).fetchone()
         return prod_type
     except :
+        flash(e)
         return None
 
 def get_product(prod_name) :
@@ -37,4 +40,5 @@ def get_product(prod_name) :
         ).fetchone()
         return prod
     except Exception as e:
+        flash(e)
         return None
