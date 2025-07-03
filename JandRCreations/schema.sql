@@ -10,6 +10,7 @@ CREATE TABLE prod_design (
 CREATE TABLE prod_type (
     prod_type_id INTEGER PRIMARY KEY AUTOINCREMENT,
     prod_type TEXT NOT NULL,
+    prod_type_description TEXT NOT NULL,
     prod_design_id TEXT NOT NULL,
     FOREIGN KEY (prod_design_id) REFERENCES prod_design (prod_design_id)
 );
@@ -28,8 +29,8 @@ CREATE TABLE prod (
 INSERT INTO prod_design (prod_design) VALUES ('custom');
 INSERT INTO prod_design (prod_design) VALUES ('premade');
 
-INSERT INTO prod_type (prod_type, prod_design_id) VALUES ('wreath', 1);
-INSERT INTO prod_type (prod_type, prod_design_id) VALUES ('bracelet', 1);
-INSERT INTO prod_type (prod_type, prod_design_id) VALUES ('wood', 1);
+INSERT INTO prod_type (prod_type, prod_design_id, prod_type_description) VALUES ('wreath', 1, 'get wreath');
+INSERT INTO prod_type (prod_type, prod_design_id, prod_type_description) VALUES ('bracelet', 1, 'get bracelet');
+INSERT INTO prod_type (prod_type, prod_design_id, prod_type_description) VALUES ('wood', 2, 'get wood');
 
 INSERT INTO prod (prod_type_id, prod_name, prod_description, prod_price, prod_cost, prod_sold) VALUES ('1', 'Hol_Wreath', 'A holiday wreath', 5, 5, FALSE);
