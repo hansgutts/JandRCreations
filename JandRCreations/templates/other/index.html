@@ -1,15 +1,28 @@
-{% extends 'base.html' %}
+{% extends 'base.html' %} 
 
-{% block title %}J&amp;RCreations{% endblock %}
+{% block title %}J&amp;RCreations{% endblock %} 
+{% block stylesheet %}
+<link rel="stylesheet" href="{{ url_for('static', filename = 'css/index.css') }}"> 
+{% endblock %}
 
-hello
-
-{% block content %}
-    {% for design in designdict.keys() %}
-        <h2>{{ design }}</h2>
+{% block content %} 
+    {% for design in designdict.keys() %} 
+        <div class="design"><h2>{{ design|capitalize }}</h2></div> 
+        <div class="type">
         {% for row in designdict[design] %}
-            {{ row['prod_type'] }}<br>
+            {% set typeid = row['prod_type_id'] %}
+            {% set type = row['prod_type'] %}
+            {% set filename = 'images/' + type + '.png' %}
+            <a href = "{{ url_for('products.view_type', type=typeid) }}">
+                
+                    <div class="type_content">
+                        <img class ='type_img' src="{{ url_for('static', filename = filename) }}">
+                        <span class='type_name'> {{ type|capitalize }}</span>
+                    </div>
+                
+            </a>
         {% endfor %}
+        </div>
         <br>
     {% endfor %}
 {% endblock %}

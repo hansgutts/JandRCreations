@@ -2,18 +2,21 @@
 <title>{% block title%}{% endblock %}</title>
 <link rel="stylesheet" href="{{ url_for('static', filename = 'css/reset.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename = 'css/base.css') }}">
-<nav>
-    <div id="top_nav">
-        <div id="logo">
-            <a href="{{url_for('index')}}"><img src="{{ url_for('static', filename = 'images/JandRLogo.png')}}" id="logoimg"></a>
+{%block stylesheet%}{%endblock%}
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300&display=swap" rel="stylesheet"><link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Nunito&display=swap" rel="stylesheet">
+<header>
+    <nav>
+        <div id="top_nav">
+            <div id="logo">
+                <a href="{{url_for('index')}}"><img src="{{ url_for('static', filename = 'images/JandRLogo.png')}}" id="logoimg"></a>
+            </div>
+            <div class="nav_sections"><a href="{{ url_for('other.contact') }}">Contact Us</a></div>
         </div>
-        <div class="nav_sections"><a href="{{ url_for('other.contact') }}">Contact Us</a></div>
-    </div>
-</nav>
+    </nav>
+</header>
 <section class="content">
-    <header>
-        {% block header %}{% endblock %}
-    </header>
     {% for message in get_flashed_messages() %}
         <div class="flash">{{ message }}</div>
     {% endfor %}
