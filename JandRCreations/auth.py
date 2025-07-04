@@ -55,6 +55,6 @@ def get_prod_by_prodid(prodid) : #get the prod by id
     db = get_db() #connect
 
     #get the prod info where the prod id matched the input. leave it in dict to make future access more logical 
-    prod = db.execute('SELECT prod_name, prod_description, prod_price, prod_cost, prod_sold FROM prod WHERE prod_id = ?', (prodid,)).fetchone()
+    prod = db.execute('SELECT prod_id, prod_name, prod_description, prod_price, prod_cost, prod_sold FROM prod WHERE prod_id = ?', (prodid,)).fetchone()
 
     return prod

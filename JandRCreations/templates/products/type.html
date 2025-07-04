@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}{{type['prod_type']|capitalize}}{% endblock %}
+
+{% block stylesheet %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/type.css')}}">
+{% endblock %}
+
+{% block content %}
+    <div id="type_box">
+            <span id='type'>{{ type['prod_type']|capitalize }}</span>
+            <span id="type_description"> - {{ type['prod_type_description'] }}</span>
+    </div>
+    <div class="products_box">
+        {% for prod in prods %}
+            {% if not prod['prod_sold'] == True %}
+                {% set filename = 'images/' + prod['prod_name'] + '.png' %}
+                
+                <a href='{{ url_for("products.view_product", product=prod["prod_id"]) }}'><div id="prod_img_container">
+                    <img src="{{url_for('static', filename=filename)}}" class="prod_img">
+                </div></a>
+                <div class="prod_text">
+                    <span class="prod_description">{{ prod['prod_description'] }} <br></span>
+                    <span class="price">{{ "$%.2f"|format(prod['prod_price']) }}</span>
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+    
+{% endblock %}

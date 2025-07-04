@@ -14,7 +14,7 @@ html, body {
 }
 html {
 	/*#e1c6f4;*/
-	background-color: #f8f2fc;
+	background-color: #f1e5fd;
 	/*background-image: linear-gradient(white, #bd83e7);*/
 	padding-bottom: 5%;
 }
@@ -40,6 +40,7 @@ p {
 	margin: auto;
 	margin-bottom: 1%;
 	display: flex;
+	max-width: 2000px;
 }
 #top_nav a {
 	text-decoration: none;
@@ -77,6 +78,7 @@ p {
 	justify-content: center;
 	flex-wrap: wrap;
 	margin-top: 1%;
+	max-width: 1960px;
 }
 .sell {
 	text-align: center;
