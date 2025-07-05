@@ -29,8 +29,17 @@ CREATE TABLE prod (
 INSERT INTO prod_design (prod_design) VALUES ('custom');
 INSERT INTO prod_design (prod_design) VALUES ('premade');
 
-INSERT INTO prod_type (prod_type, prod_design_id, prod_type_description) VALUES ('wreath', 1, 'get wreath');
-INSERT INTO prod_type (prod_type, prod_design_id, prod_type_description) VALUES ('bracelet', 1, 'get bracelet');
-INSERT INTO prod_type (prod_type, prod_design_id, prod_type_description) VALUES ('wood', 2, 'get wood');
+INSERT INTO prod_type (prod_type, prod_design_id, prod_type_description) VALUES ('wreaths', 1, 'get wreath');
+INSERT INTO prod_type (prod_type, prod_design_id, prod_type_description) VALUES ('yarn crafts', 1, 'get bracelet');
+INSERT INTO prod_type (prod_type, prod_design_id, prod_type_description) VALUES ('woodburning', 1, 'get wood');
+
+INSERT INTO prod_type (prod_type, prod_design_id, prod_type_description) VALUES ('safety keychains', 2, 'keep safe');
+INSERT INTO prod_type (prod_type, prod_design_id, prod_type_description) VALUES ('airtags', 2, 'help keep others safe');
+INSERT INTO prod_type (prod_type, prod_design_id, prod_type_description) VALUES ('other', 2, 'other things dont fall into a clear category');
 
 INSERT INTO prod (prod_type_id, prod_name, prod_description, prod_price, prod_cost, prod_sold) VALUES ('1', 'Hol_Wreath', 'A holiday wreath', 5, 5, FALSE);
+INSERT INTO prod (prod_type_id, prod_name, prod_description, prod_price, prod_cost, prod_sold) VALUES ('2', 'Hol_Wreath', 'A holiday wreath', 5, 5, FALSE);
+INSERT INTO prod (prod_type_id, prod_name, prod_description, prod_price, prod_cost, prod_sold) VALUES ('3', 'Hol_Wreath', 'A holiday wreath', 5, 5, FALSE);
+INSERT INTO prod (prod_type_id, prod_name, prod_description, prod_price, prod_cost, prod_sold) VALUES ('4', 'Hol_Wreath', 'A holiday wreath', 5, 5, FALSE);
+INSERT INTO prod (prod_type_id, prod_name, prod_description, prod_price, prod_cost, prod_sold) VALUES ('5', 'Hol_Wreath', 'A holiday wreath', 5, 5, FALSE);
+INSERT INTO prod (prod_type_id, prod_name, prod_description, prod_price, prod_cost, prod_sold) VALUES ('6', 'Hol_Wreath', 'A holiday wreath', 5, 5, FALSE);
