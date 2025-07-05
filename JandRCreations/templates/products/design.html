@@ -1,3 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}{{ design }}{% endblock%}
+{% block title %}{{ design['prod_design'] }}{% endblock%}
+{% block content %}
+    {{ design['prod_design'] }}
+{% endblock %}

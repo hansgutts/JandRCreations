@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block title %}{{prod['prod_name']}}{% endblock %}
+
+{% block stylesheet %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/product.css') }}">
+{% endblock %}
+
+{% block content %}
+    {% if prod['prod_sold'] %}
+        <h1>This product is no longer available.</h1>
+    {% else %}
+    {% set filename = 'images/' + prod['prod_name'] + '.png' %}
+    <div id="prod_container">
+        <div>
+            <img id="prod_img" src="{{ url_for('static', filename=filename) }}">
+        </div>
+        <div id="prod_text">
+            <p id="prod_description">{{prod['prod_description']}}</p>
+            
+            <p id="prod_price">{{ "$%.2f"|format(prod['prod_price']) }}</p>
+        </div>
+        <div id="instructions">
+            We are currently in the process of making it possible to make these purchases on our website.
+            In the meantime, please contact us through Instagram or Facebook (JandRCreations) directly. 
+            Payments are made through Venmo and packages are sent out manually by us.
+            Thank you for your support!
+        </div>
+    </div>
+    {% endif %}
+{% endblock %}
+

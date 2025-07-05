@@ -1,0 +1,24 @@
+#prod_container {
+    display: grid;
+    grid-template-columns: 30% 70%;
+    position: relative;
+    background-color: #f7f7f7;
+    padding: 1% 1% .5% 1%;
+}
+ #prod_img {
+    max-width: 100%;
+ }
+#prod_description {
+    font-size: 1.5em;
+    padding: 1% 1% 1% 1%;
+}
+#prod_price {
+    position: absolute;
+    bottom: 0;
+    padding-left: 1%;
+}
+ #instructions {
+    padding: 5% 1% 2% 1%;
+    grid-column: span 2;
+    font-size: 1em;
+ }

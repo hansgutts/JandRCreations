@@ -13,7 +13,7 @@ from JandRCreations.auth import get_design_by_designid
 
 import sqlite3
 
-bp = Blueprint('products', __name__)
+bp = Blueprint('products', __name__,)
 
 #there are three views I want to be able to distinguish
 #the home page should default to viewing everything except individual products - I want a section for each design, and a subsection for each type
@@ -30,11 +30,24 @@ def view_design(design) : #we need to get the specific designs types, if it exis
         abort(404)
 
 #the type view should show only types of products within that type - so wreaths, bracelets, etc
-@bp.route('/<type>/view_type') #look at a specific type of product
+@bp.route('/<int:type>/view_type') #look at a specific type of product
 def view_type(type) : #we need to get each product in each type, if it exists. ow send a 404 error
-    return get_type_by_typeid(type)['prod_type']
+    type = get_type_by_typeid(type)
+
+    prods = get_prods_by_typeid(type['prod_type_id'])
+    prods = [get_prod_by_prodid(prodid) for prodid in prods]
+
+    if type is not None :    
+        return render_template('products/type.html', type=type, prods=prods)#get_type_by_typeid(type)['prod_type']
+    else :
+        abort(404)
 
 #the product view should show specific product information - pictures of this item, price, description, etc
-@bp.route('/<product>/view_prod') #look at a specific product
+@bp.route('/<int:product>/view_prod') #look at a specific product
 def view_product(product): #get the information about the product, if it exists. ow send a 404 error
-    return get_prod_by_prodid(product)['prod_name']
+    prod = get_prod_by_prodid(product)
+
+    if prod is not None :
+        return render_template('products/product.html', prod=prod)
+    else :
+        abort(404)
