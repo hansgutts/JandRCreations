@@ -4,12 +4,12 @@ from flask import (
 
 from werkzeug.security import check_password_hash, generate_password_hash
 from JandRCreations.db import get_db
-from JandRCreations.auth import get_types_by_designid
 from JandRCreations.auth import get_type_by_typeid
-from JandRCreations.auth import get_all_designs
 from JandRCreations.auth import get_prods_by_typeid
 from JandRCreations.auth import get_prod_by_prodid
 from JandRCreations.auth import get_design_by_designid
+from JandRCreations.auth import get_cust_by_prodid
+from JandRCreations.auth import get_options_by_custid
 
 import sqlite3
 
@@ -47,7 +47,15 @@ def view_type(type) : #we need to get each product in each type, if it exists. o
 def view_product(product): #get the information about the product, if it exists. ow send a 404 error
     prod = get_prod_by_prodid(product)
 
+    #also need information regarding whether our product is customizable
+    cust = get_cust_by_prodid(product)
+
+    #and the options on the customizations
+    #[{key:cust = value:[options]}] a bit weird but makes iteration a lot easier and logical later
+    cust = {tempcust:get_options_by_custid(tempcust['custom_id']) for tempcust in cust}
+
+
     if prod is not None :
-        return render_template('products/product.html', prod=prod)
+        return render_template('products/product.html', prod=prod, cust=cust)
     else :
         abort(404)

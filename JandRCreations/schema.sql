@@ -1,6 +1,8 @@
 DROP TABLE IF EXISTS prod_design;
 DROP TABLE IF EXISTS prod_type;
 DROP TABLE IF EXISTS prod;
+DROP TABLE IF EXISTS custom;
+DROP TABLE IF EXISTS options;
 
 CREATE TABLE prod_design (
     prod_design_id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -26,6 +28,26 @@ CREATE TABLE prod (
     FOREIGN KEY (prod_type_id) REFERENCES prod_type (prod_type_id)
 );
 
+CREATE TABLE custom (
+    custom_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    prod_id INTEGER NOT NULL,
+    custom TEXT NOT NULL,
+    custom_desc TEXT NOT NULL,
+    exclusive BOOLEAN NOT NULL,
+    require BOOLEAN NOT NULL,
+    FOREIGN KEY (prod_id) REFERENCES prod (prod_id)
+);
+
+CREATE TABLE options (
+    options_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    custom_id INTEGER NOT NULL,
+    cost_change REAL NOT NULL,
+    option_name TEXT NOT NULL,
+    FOREIGN KEY (custom_id) REFERENCES custom (custom_id)
+);
+
+
+
 INSERT INTO prod_design (prod_design) VALUES ('custom');
 INSERT INTO prod_design (prod_design) VALUES ('premade');
 
@@ -43,3 +65,16 @@ INSERT INTO prod (prod_type_id, prod_name, prod_description, prod_price, prod_co
 INSERT INTO prod (prod_type_id, prod_name, prod_description, prod_price, prod_cost, prod_sold) VALUES ('4', 'Hol_Wreath', 'A holiday wreath', 5, 5, FALSE);
 INSERT INTO prod (prod_type_id, prod_name, prod_description, prod_price, prod_cost, prod_sold) VALUES ('5', 'Hol_Wreath', 'A holiday wreath', 5, 5, FALSE);
 INSERT INTO prod (prod_type_id, prod_name, prod_description, prod_price, prod_cost, prod_sold) VALUES ('6', 'Hol_Wreath', 'A holiday wreath', 5, 5, FALSE);
+
+INSERT INTO custom (custom_id, prod_id, custom, custom_desc, exclusive, require) VALUES (1, 1, 'Color', 'Choose your color', TRUE, TRUE);
+INSERT INTO custom (custom_id, prod_id, custom, custom_desc, exclusive, require) VALUES (2, 1, 'Color', 'Choose your color', TRUE, TRUE);
+
+INSERT INTO options (options_id, custom_id, cost_change, option_name) VALUES (1, 1, 2.50, 'Blue');
+INSERT INTO options (options_id, custom_id, cost_change, option_name) VALUES (2, 1, 2.50, 'Red');
+INSERT INTO options (options_id, custom_id, cost_change, option_name) VALUES (3, 1, 2.50, 'orange');
+INSERT INTO options (options_id, custom_id, cost_change, option_name) VALUES (4, 1, 2.50, 'green');
+
+INSERT INTO options (options_id, custom_id, cost_change, option_name) VALUES (5, 2, 2.50, 'Blue');
+INSERT INTO options (options_id, custom_id, cost_change, option_name) VALUES (6, 2, 2.50, 'Red');
+INSERT INTO options (options_id, custom_id, cost_change, option_name) VALUES (7, 2, 2.50, 'orange');
+INSERT INTO options (options_id, custom_id, cost_change, option_name) VALUES (8, 2, 2.50, 'green');

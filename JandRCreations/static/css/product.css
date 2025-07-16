@@ -5,6 +5,15 @@
     background-color: #f7f7f7;
     padding: 1% 1% .5% 1%;
 }
+
+#prod_container_cust {
+    display: grid;
+    grid-template-columns: 30% 50% 20%;
+    position: relative;
+    background-color: #f7f7f7;
+    padding: 1% 1% .5% 1%;
+}
+
  #prod_img {
     max-width: 100%;
  }
@@ -19,6 +28,6 @@
 }
  #instructions {
     padding: 5% 1% 2% 1%;
-    grid-column: span 2;
+    grid-column: span 3;
     font-size: 1em;
  }

@@ -11,15 +11,31 @@
         <h1>This product is no longer available.</h1>
     {% else %}
     {% set filename = 'images/' + prod['prod_name'] + '.png' %}
-    <div id="prod_container">
+    <div {% if cust %} id="prod_container_cust" {% else %} id="prod_container" {% endif %}>
         <div>
             <img id="prod_img" src="{{ url_for('static', filename=filename) }}">
         </div>
-        <div id="prod_text">
+        
+        <div {% if cust %} id="prod_text_cust" {% else %} id="prod_text" {% endif %}>
             <p id="prod_description">{{prod['prod_description']}}</p>
             
             <p id="prod_price">{{ "$%.2f"|format(prod['prod_price']) }}</p>
         </div>
+        {% if cust %}
+            <div id="forms_container">
+            {% for customization in cust %}
+                <form class="forms">
+                    {{customization['custom_desc']}}
+                    <select class="cust_name">
+                        {% for option in cust[customization] %}
+                            <option value="{{option['cost_change']}}">{{option['option_name']}}</option>
+                        {% endfor %}
+                    </select>
+
+                </form>
+            {% endfor %}
+            </div>
+        {% endif %}
         <div id="instructions">
             We are currently in the process of making it possible to make these purchases on our website.
             In the meantime, please contact us through Instagram or Facebook (JandRCreations) directly. 
