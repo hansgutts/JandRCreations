@@ -4,6 +4,7 @@
     position: relative;
     background-color: #f7f7f7;
     padding: 1% 1% .5% 1%;
+    grid-row-gap: 50px;
 }
 
 #prod_container_cust {
@@ -27,7 +28,27 @@
     padding-left: 1%;
 }
  #instructions {
-    padding: 5% 1% 2% 1%;
+    padding: 2% 1% 2% 1%;
     grid-column: span 3;
     font-size: 1em;
+    border-top: thin solid;
  }
+ #forms_container {
+    padding-left: 4%;
+ }
+ select,::picker(select) {
+    appearance: base-select;
+ }
+ select{
+    border-radius: 0;
+    width: 90%;
+    min-height: 30px;
+    padding-left: 3%;
+    padding-right: 2%;
+    margin-bottom: 4%;
+ }
+
+ select:open::picker-icon {
+    transition: 0.4s;
+    rotate: 90deg;
+}

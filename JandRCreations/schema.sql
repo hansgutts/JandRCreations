@@ -67,12 +67,12 @@ INSERT INTO prod (prod_type_id, prod_name, prod_description, prod_price, prod_co
 INSERT INTO prod (prod_type_id, prod_name, prod_description, prod_price, prod_cost, prod_sold) VALUES ('6', 'Hol_Wreath', 'A holiday wreath', 5, 5, FALSE);
 
 INSERT INTO custom (custom_id, prod_id, custom, custom_desc, exclusive, require) VALUES (1, 1, 'Color', 'Choose your color', TRUE, TRUE);
-INSERT INTO custom (custom_id, prod_id, custom, custom_desc, exclusive, require) VALUES (2, 1, 'Color', 'Choose your color', TRUE, TRUE);
+INSERT INTO custom (custom_id, prod_id, custom, custom_desc, exclusive, require) VALUES (2, 1, 'Color', 'Choose your color', TRUE, FALSE);
 
-INSERT INTO options (options_id, custom_id, cost_change, option_name) VALUES (1, 1, 2.50, 'Blue');
-INSERT INTO options (options_id, custom_id, cost_change, option_name) VALUES (2, 1, 2.50, 'Red');
-INSERT INTO options (options_id, custom_id, cost_change, option_name) VALUES (3, 1, 2.50, 'orange');
-INSERT INTO options (options_id, custom_id, cost_change, option_name) VALUES (4, 1, 2.50, 'green');
+INSERT INTO options (options_id, custom_id, cost_change, option_name) VALUES (1, 1, 4.50, 'Blue');
+INSERT INTO options (options_id, custom_id, cost_change, option_name) VALUES (2, 1, 4.50, 'Red');
+INSERT INTO options (options_id, custom_id, cost_change, option_name) VALUES (3, 1, 4.50, 'orange');
+INSERT INTO options (options_id, custom_id, cost_change, option_name) VALUES (4, 1, 4.50, 'green');
 
 INSERT INTO options (options_id, custom_id, cost_change, option_name) VALUES (5, 2, 2.50, 'Blue');
 INSERT INTO options (options_id, custom_id, cost_change, option_name) VALUES (6, 2, 2.50, 'Red');
