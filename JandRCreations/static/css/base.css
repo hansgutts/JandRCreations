@@ -98,3 +98,23 @@ p {
 	padding-right: 1%;
 	display: inline-block;
 }
+
+#form_div {
+	width: 60%;
+	background-color: white;
+	text-align: center;
+	margin: 0 auto 0 auto;
+	padding-bottom: 1%;
+	min-height: 400px;
+}
+.form_section {
+	min-height: 25px;
+}
+#form_text {
+	min-height: 50px;
+	background-color: rgb(247, 247, 247);
+	padding-top: 1%;
+}
+form {
+	padding-top: 1%;
+}

@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <div id="form_div">
+
+        {% block formtext %}<div id="form_text"></div>{% endblock %}
+        <form method="post">
+        {% if form %}
+            {% for field in form %}
+                <div class="form_section">
+                    {{field.label}}
+                    {{field}}
+                </div>
+            {% endfor %}
+        {% endif %}
+    </form>
+
+    </div>
+
+{% endblock %}

@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block stylesheet %}
+    <link rel="stylesheet" href="{{url_for('static', filename='css/admin_home.css')}}">
+{% endblock %}
+
+
+{% block content %}
+    <div id="form_div">
+        <div id="links">
+        <div id="instructions">Choose what you'd like to do</div>
+        <a href='{{url_for("admin.admin_design")}}'><div class="home_links">
+            Change/Add Design
+        </div></a>
+        <a href='{{url_for("admin.admin_type")}}'><div class="home_links">
+            Change/Add Type
+        </div></a>
+        <a href='{{url_for("admin.admin_product")}}'><div class="home_links">
+            Change/Add Product
+        </div></a>
+        </div>
+    </div>
+{% endblock %}

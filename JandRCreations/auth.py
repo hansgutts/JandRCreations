@@ -5,6 +5,14 @@
 import sqlite3
 from JandRCreations.db import get_db
 from flask import flash
+#from JandRCreations.db import get_admin_db
+from flask import g
+from flask import(
+    Blueprint, flash, g, redirect, render_template, request, session, url_for
+)
+import functools
+
+from werkzeug.security import check_password_hash, generate_password_hash
 
 ####NEED TO UPDATE THESE TO PROTECT INPUTS IN THE FUTURE JUST TO BE SAFE########
 
@@ -94,3 +102,10 @@ def get_options_by_custid(custid) : #need to get options for the customization
     options = db.execute('SELECT * FROM options WHERE options.custom_id = ?', (custid,)).fetchall()
 
     return options
+
+def get_user_by_username(username) :
+
+    admin_db = get_db() #connect
+
+    return admin_db.execute('SELECT * FROM user WHERE user.username = ?', (username,)).fetchone()
+        

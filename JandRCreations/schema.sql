@@ -3,6 +3,7 @@ DROP TABLE IF EXISTS prod_type;
 DROP TABLE IF EXISTS prod;
 DROP TABLE IF EXISTS custom;
 DROP TABLE IF EXISTS options;
+DROP TABLE IF EXISTS user;
 
 CREATE TABLE prod_design (
     prod_design_id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -46,6 +47,13 @@ CREATE TABLE options (
     FOREIGN KEY (custom_id) REFERENCES custom (custom_id)
 );
 
+CREATE TABLE user (
+    user_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    username TEXT NOT NULL,
+    userpassword TEXT NOT NULL
+);
+
+INSERT INTO user (username, userpassword) VALUES ('hansgutts', '1234');
 
 
 INSERT INTO prod_design (prod_design) VALUES ('custom');
@@ -78,3 +86,4 @@ INSERT INTO options (options_id, custom_id, cost_change, option_name) VALUES (5,
 INSERT INTO options (options_id, custom_id, cost_change, option_name) VALUES (6, 2, 2.50, 'Red');
 INSERT INTO options (options_id, custom_id, cost_change, option_name) VALUES (7, 2, 2.50, 'orange');
 INSERT INTO options (options_id, custom_id, cost_change, option_name) VALUES (8, 2, 2.50, 'green');
+

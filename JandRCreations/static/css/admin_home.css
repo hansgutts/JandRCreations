@@ -1,0 +1,21 @@
+a {
+    color: black;
+    text-decoration: none;
+    display: inline-block;
+    width: 40%;
+    min-height: 50px;
+    background-color: rgb(245, 245, 245);
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 2%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#instructions {
+    width: 100%;
+    background-color: rgb(247, 247, 247);
+    min-height: 50px;
+    padding-top: 1%;
+    font-size: 1.25em;
+}

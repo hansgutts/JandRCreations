@@ -8,6 +8,7 @@ def create_app(test_config=None) : #create the flask app
     app.config.from_mapping( #set the config information. this should be in its own config file
         SECRET_KEY = 'dev', #this is a key to be used for encryption and shouldn't be able to be accessed by anyone else. also shouldn't be 'dev' at launch
         DATABASE = os.path.join(app.instance_path, 'JandRCreations.sqlite') #where the db is stored
+        #ADMIN_DATABASE = os.path.join(app.instance_path, 'admin.sqlite')
     )
 
     if test_config is None: #if we aren't testing
@@ -28,6 +29,9 @@ def create_app(test_config=None) : #create the flask app
 
     from . import other
     app.register_blueprint(other.bp)
+
+    from . import admin
+    app.register_blueprint(admin.bp)
 
     app.add_url_rule('/', endpoint='index') #the base page with no added paths should go to our index page. easier than a decorator function
 
