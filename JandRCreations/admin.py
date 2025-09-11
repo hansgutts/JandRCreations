@@ -1,10 +1,11 @@
 from JandRCreations.db import (get_db)
-from JandRCreations.auth import (get_user_by_username)
+from JandRCreations.auth import (get_user_by_username, get_type_by_typeid, create_design, get_design_by_designid, get_all_designs, create_type, create_product, get_all_types)
 from flask import (
-    Blueprint, flash, g, redirect, render_template, request, session, url_for, abort
+    Blueprint, flash, g, redirect, render_template, request, session, url_for, abort, current_app
 )
 from JandRCreations.forms import *
 import functools
+import os
 
 bp = Blueprint('admin', __name__, url_prefix='/admin')
 
@@ -16,39 +17,74 @@ bp = Blueprint('admin', __name__, url_prefix='/admin')
 #   a page with a form to input new items in to database for each page
 #       design, type, and product. Need a page fore each to add a new one of any of those to the db
 
-def require_login(view) :
-    @functools.wraps(view)
+def require_login(view) : #make it be required for the user to be logged in
+    @functools.wraps(view) #basic function wrapping
     def wrapped_view(**kwargs) :
-        if g.admin is None :
+        if g.admin is None : #if the admin user is not logged in
 
-            return redirect(url_for('admin.login'))
-        
-        else :
-            print(g.admin)
+            return redirect(url_for('products.home')) #they go to the log in page
         
         return view(**kwargs)
     
-    return wrapped_view
+    return wrapped_view #if they are loggged in continue as expected
 
 @bp.route('/home') #this will be a simple page. button to go to the other three pages
-@require_login
+@require_login #require them to be logged in
 def admin_home() :
-    return render_template('admin/home.html')
+    return render_template('admin/home.html') #render the home page
 
-@bp.route('/design') #form to add a design into our database. relatively simple
-@require_login
-def admin_design() :
-    return render_template('admin/design.html')
+@bp.route('/design', methods=('GET', 'POST')) #form to add a design into our database. relatively simple
+@require_login #require them to be logged in
+def admin_design() : 
 
-@bp.route('/type') #form to add a type into our database. will need to reference a design
-@require_login
-def admin_type() :
-    return render_template('admin/type.html')
+    form = DesignForm(request.form) #get the form for adding a new design
 
-@bp.route('/product') #form to add a product into our database. will need to reference type, and include adding customization options
-@require_login
-def admin_product() :
-    return render_template('admin/product.html')
+    if request.method == 'POST' and form.validate() : #if posted and the form validates
+
+        if create_design(form) < 0 : #create the form and make sure it succeeded
+            flash("Error adding design") #if failed flash the errors
+        else :
+            return redirect(url_for('admin.admin_home'))
+
+    return render_template('admin/design.html', form=form) #if no errors go to the home page
+
+@bp.route('/type', methods=('GET', 'POST')) #form to add a type into our database. will need to reference a design
+@require_login #log in
+def admin_type() : 
+    form = TypeForm(request.form) #get the form
+    #fill in the choices for the form
+    form.prod_design_id.choices = [(design["prod_design_id"], get_design_by_designid(design["prod_design_id"])['prod_design']) for design in get_all_designs()] 
+
+    #some extra validation for image uploads are required
+    if request.method == "POST" and form.validate() and request.files[form.type_image.name] and request.files[form.type_image.name].filename:
+
+        if create_type(form, current_app) < 0 : #try and create the new type
+            flash("Error adding type") #if it fails flash the errors
+        else : #if it succeeds
+            flash("Successfully added type") #success message
+            
+        return redirect(url_for('admin.admin_home')) #if succeeded go to the home page
+    
+    #if didn't succeed just go back to the form page
+    return render_template('admin/type.html', form=form)
+
+@bp.route('/product', methods=('GET', 'POST')) #form to add a product into our database. will need to reference type, and include adding customization options
+@require_login #admin needs to be logged in to upload
+def admin_product() : #page to add a product
+
+    form = ProductForm(request.form) #create our new product form
+
+    #generate the choices dynamically, (typeid, typename)
+    form.type_id.choices = [(types["prod_type_id"], get_type_by_typeid(types["prod_type_id"])['prod_type']) for types in get_all_types()]
+
+    if request.method == "POST" and form.validate : #if the form is submited
+        if create_product(form, current_app) < 0 : #try and create the new type
+            flash("Error adding product") #if it fails flash the errors
+        else : #if it succeeds
+            flash("Successfully added product") #success message
+            return redirect(url_for("admin.admin_home"))
+
+    return render_template('admin/product.html', form=form) #redirect to the product page on failure
 
 @bp.route('/login', methods=('GET', 'POST'))
 def login():
@@ -57,17 +93,34 @@ def login():
 
     if request.method == 'POST' and form.validate() :
 
+         #open our admin db
+        user = get_user_by_username(form.username.data)       
+
+        #if there is no user matching the username input
+        if user is None :
+            return False #fail validation
+        
+        #otherwise check the password. hashed for security
+        ###############NEED TO UNCOMMENT THIS AFTER TESTING#####################
+        #elif not check_password_hash(user['user_password'], self.password) : 
+        #    return False
+        elif not user['userpassword'] == form.password.data :
+            return False
+
+        #if we get to the point we are logged in, store it in the session
+        session['user_id'] = user['user_id']
+
         return redirect(url_for('admin.admin_home'))
 
     return render_template('admin/login.html', form=form)
 
-@bp.before_app_request
+@bp.before_app_request #load the admin user before the page is loaded
 def load_admin_user() :
-    user_id = session.get('user_id')
+    user_id = session.get('user_id') #get the stored user id
 
-    if user_id is None :
-        g.admin = None
-    else :
+    if user_id is None : #if the userid is none
+        g.admin = None #we are not logged in
+    else : #otherwise get user information
         g.admin = get_db().execute('SELECT * FROM user WHERE user_id = ?', (user_id,)).fetchone()['username']
 
 

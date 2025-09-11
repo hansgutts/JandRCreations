@@ -21,5 +21,5 @@ def index() :  #get every design and every type and send those through to the in
     #feels a little weird but stops me from making a million different functions to get info from db
     for design in designs : #go through all our designs and set the (key, value) pair as (design name, list of types with design name)
         designdict[design['prod_design']] = [get_type_by_typeid(id) for id in get_types_by_designid(design['prod_design_id'])]
-    print(designdict)
+ 
     return flask.render_template('other/index.html', designdict=designdict) #render home page and send it the designs and types

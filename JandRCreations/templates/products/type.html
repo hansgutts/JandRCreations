@@ -14,10 +14,9 @@
     <div class="products_box">
         {% for prod in prods %}
             {% if not prod['prod_sold'] == True %}
-                {% set filename = 'images/' + prod['prod_name'] + '.png' %}
-                
+
                 <a href='{{ url_for("products.view_product", product=prod["prod_id"]) }}'><div id="prod_img_container">
-                    <img src="{{url_for('static', filename=filename)}}" class="prod_img">
+                    <img src="{{ url_for('static', filename = 'images/' + prod['prod_image'] )}}" class="prod_img">
                 </div></a>
                 <div class="prod_text">
                     <span class="prod_description">{{ prod['prod_description'] }} <br></span>

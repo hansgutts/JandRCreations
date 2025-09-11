@@ -3,16 +3,19 @@
 #off the top of my head, we will need to get designs, types, and products
 
 import sqlite3
+import wtforms
+import os
 from JandRCreations.db import get_db
-from flask import flash
 #from JandRCreations.db import get_admin_db
 from flask import g
 from flask import(
-    Blueprint, flash, g, redirect, render_template, request, session, url_for
+    Blueprint, flash, g, redirect, render_template, request, session, url_for, current_app
 )
 import functools
+import flask
 
 from werkzeug.security import check_password_hash, generate_password_hash
+from werkzeug.utils import secure_filename
 
 ####NEED TO UPDATE THESE TO PROTECT INPUTS IN THE FUTURE JUST TO BE SAFE########
 
@@ -24,6 +27,13 @@ def get_all_designs() : #I want to get design id and name for all designs
 
     return designs
 
+def get_all_types() :
+    db = get_db()
+
+    types = db.execute('SELECT prod_type_id, prod_type FROM prod_type').fetchall()
+
+    return types
+
 def get_design_by_designid(designid) : #get design the design by the id, simply returns the design name
     db = get_db() #connect
 
@@ -31,7 +41,7 @@ def get_design_by_designid(designid) : #get design the design by the id, simply 
         return None
 
     #get the design name where design id matches input
-    design = db.execute('SELECT prod_design FROM prod_design WHERE prod_design_id = ?', (designid,)).fetchone()['prod_design']
+    design = db.execute('SELECT prod_design FROM prod_design WHERE prod_design_id = ?', (designid,)).fetchone()
 
     return design
 
@@ -54,7 +64,7 @@ def get_type_by_typeid(typeid) : #get type info from the id
         return None
 
     #get the type and description from the db. leave it in a dict to make future access more logical
-    types = db.execute('SELECT prod_type_id, prod_type, prod_type_description FROM prod_type WHERE prod_type_id = ?', (typeid,)).fetchone()
+    types = db.execute('SELECT prod_type_id, prod_type, prod_type_description, prod_type_image FROM prod_type WHERE prod_type_id = ?', (typeid,)).fetchone()
 
     return types
 
@@ -78,7 +88,7 @@ def get_prod_by_prodid(prodid) : #get the prod by id
         return None
 
     #get the prod info where the prod id matched the input. leave it in dict to make future access more logical 
-    prod = db.execute('SELECT prod_id, prod_name, prod_description, prod_price, prod_cost, prod_sold FROM prod WHERE prod_id = ?', (prodid,)).fetchone()
+    prod = db.execute('SELECT prod_id, prod_name, prod_description, prod_price, prod_cost, prod_sold, prod_image FROM prod WHERE prod_id = ?', (prodid,)).fetchone()
 
     return prod
 
@@ -109,3 +119,69 @@ def get_user_by_username(username) :
 
     return admin_db.execute('SELECT * FROM user WHERE user.username = ?', (username,)).fetchone()
         
+def create_design(form) :
+
+    design_values = tuple_form(form)
+
+    db = get_db()
+
+    try :
+        db.execute("INSERT INTO prod_design (prod_design) VALUES (?)", design_values)
+        db.commit()
+        return 0
+
+    except Exception as e:
+        return -1
+    
+def create_type(form, my_app) :
+
+    try :
+        db = get_db()
+
+        image = request.files[form.type_image.name]
+        image_name = form.type_name.data + image.filename[-4:]
+        form.type_image.data = image_name
+
+        type_values = tuple_form(form)
+        
+        image.save(my_app.config['IMAGES'] + image_name)
+        
+        db.execute("INSERT INTO prod_type (prod_type, prod_type_description, prod_design_id, prod_type_image) VALUES (?, ?, ?, ?)", type_values)
+        db.commit()
+        return 0
+    except Exception as e :
+        flash(e)
+        return -1
+
+
+    
+    
+def create_product(form, my_app) :
+
+
+    try :
+        db = get_db()
+
+        image = request.files[form.prod_image.name]
+        image_name = form.prod_name.data + image.filename[-4:]
+        form.prod_image.data = image_name
+        print(form.prod_cost.type)
+
+        product_tuple = tuple_form(form)
+        print(product_tuple)
+        
+        image.save(my_app.config['IMAGES'] + image_name)
+
+        db.execute("INSERT INTO prod (prod_type_id, prod_name, prod_description, prod_price, prod_cost, prod_sold, prod_image) VALUES (?, ?, ?, ?, ?, ?, ?)", product_tuple)
+        db.commit()
+
+        return 0
+
+    except Exception as e :
+        flash(e)
+        return -1
+
+def tuple_form(form) :
+    return tuple(field.data if not field.type == "DecimalField" else float(field.data) for field in form if not field.id == "submit")
+
+

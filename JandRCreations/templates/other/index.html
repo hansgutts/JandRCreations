@@ -6,23 +6,25 @@
 {% endblock %}
 
 {% block content %} 
-    {% for design in designdict.keys() %} 
-        <div class="design"><h2>{{ design|capitalize }}</h2></div> 
-        <div class="type">
-        {% for row in designdict[design] %}
-            {% set typeid = row['prod_type_id'] %}
-            {% set type = row['prod_type'] %}
-            {% set filename = 'images/' + type + '.png' %}
-            <a href = "{{ url_for('products.view_type', type=typeid) }}">
-                
-                    <div class="type_content">
-                        <img class ='type_img' src="{{ url_for('static', filename = filename) }}">
-                        <span class='type_name'> {{ type|capitalize }}</span>
-                    </div>
-                
-            </a>
+    {% if designdict %}
+        {% for design in designdict.keys() %} 
+            <div class="design"><h2>{{ design|capitalize }}</h2></div> 
+            <div class="type">
+            {% for row in designdict[design] %}
+                {% set typeid = row['prod_type_id'] %}
+                {% set type = row['prod_type'] %}
+                {% set filename = 'images/' + type + '.png' %}
+                <a href = "{{ url_for('products.view_type', type=typeid) }}">
+                    
+                        <div class="type_content">
+                            <img class ='type_img' src="{{ url_for('static', filename = 'images/' + row['prod_type_image'] ) }}">
+                            <span class='type_name'> {{ type|capitalize }}</span>
+                        </div>
+                    
+                </a>
+            {% endfor %}
+            </div>
+            <br>
         {% endfor %}
-        </div>
-        <br>
-    {% endfor %}
+    {% endif %}
 {% endblock %}

@@ -9,13 +9,12 @@
 {% endblock %}
 
 {% block content %}
-    {% if prod['prod_sold'] %}
+    {% if not prod['prod_sold'] %}
         <h1>This product is no longer available.</h1>
-    {% else %}
-    {% set filename = 'images/' + prod['prod_name'] + '.png' %}
+    {% endif %}
     <div {% if cust %} id="prod_container_cust" {% else %} id="prod_container" {% endif %}>
         <div>
-            <img id="prod_img" src="{{ url_for('static', filename=filename) }}">
+            <img src="{{ url_for('static', filename = 'images/' + prod['prod_image'] )}}" id="prod_img">
         </div>
         
         <div {% if cust %} id="prod_text_cust" {% else %} id="prod_text" {% endif %}>
@@ -46,6 +45,5 @@
             Thank you for your support!
         </div>
     </div>
-    {% endif %}
 {% endblock %}
 

@@ -46,13 +46,19 @@ def view_type(type) : #we need to get each product in each type, if it exists. o
 @bp.route('/<int:product>/view_prod') #look at a specific product
 def view_product(product): #get the information about the product, if it exists. ow send a 404 error
     prod = get_prod_by_prodid(product)
+    for data in prod :
+        print(data)
 
     #also need information regarding whether our product is customizable
     cust = get_cust_by_prodid(product)
+    if cust :
+        print(cust)
 
     #and the options on the customizations
     #[{key:cust = value:[options]}] a bit weird but makes iteration a lot easier and logical later
     cust = {tempcust:get_options_by_custid(tempcust['custom_id']) for tempcust in cust}
+    if cust :
+        print(cust)
 
 
     if prod is not None :
