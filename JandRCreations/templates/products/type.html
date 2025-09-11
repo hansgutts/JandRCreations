@@ -12,9 +12,8 @@
             <span id="type_description"> - {{ type['prod_type_description'] }}</span>
     </div>
     <div class="products_box">
-        {% for prod in prods %}
-            {% if not prod['prod_sold'] == True %}
-
+        {% for prod in prods %}  
+        {% if prod['prod_sold'] == 'False' %}
                 <a href='{{ url_for("products.view_product", product=prod["prod_id"]) }}'><div id="prod_img_container">
                     <img src="{{ url_for('static', filename = 'images/' + prod['prod_image'] )}}" class="prod_img">
                 </div></a>
