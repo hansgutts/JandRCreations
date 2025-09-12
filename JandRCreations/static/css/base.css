@@ -118,3 +118,7 @@ p {
 form {
 	padding-top: 1%;
 }
+.message {
+    color: red;
+	font-size: .8em;
+}
