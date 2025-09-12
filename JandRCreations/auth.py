@@ -34,6 +34,25 @@ def get_all_types() :
 
     return types
 
+def get_all_prods() :
+    db = get_db()
+
+    prods = db.execute("SELECT prod_id, prod_name FROM prod").fetchall()
+    return prods
+
+def get_all_custom() :
+    db = get_db()
+
+    options = db.execute("SELECT custom_id, custom FROM custom").fetchall()
+    return options
+
+def get_all_options() :
+    db = get_db()
+
+    options = db.execute("SELECT option_id, option_name FROM options").fetchall()
+    return options
+
+
 def get_design_by_designid(designid) : #get design the design by the id, simply returns the design name
     db = get_db() #connect
 
@@ -92,6 +111,17 @@ def get_prod_by_prodid(prodid) : #get the prod by id
 
     return prod
 
+#get the prodid from the customization id
+def get_prodid_by_customid(id) :
+    db = get_db()
+
+    try :
+        prod = db.execute("SELECT prod_id FROM custom WHERE custom_id = ?", (id,)).fetchone()['prod_id']
+        return prod
+    except Exception as e :
+        print('Error ' + str(e))
+        return -1
+
 def get_cust_by_prodid(prodid) : #get customization sections based on prodid
     db = get_db() #open the db
 
@@ -100,7 +130,6 @@ def get_cust_by_prodid(prodid) : #get customization sections based on prodid
     
     #get all fields from custom table, makes it easier later since this works the same as a dict
     cust = db.execute('SELECT * FROM custom WHERE custom.prod_id = ?', (prodid,)).fetchall()
-
     return cust
 
 def get_options_by_custid(custid) : #need to get options for the customization
@@ -152,9 +181,6 @@ def create_type(form, my_app) :
     except Exception as e :
         flash(e)
         return -1
-
-
-    
     
 def create_product(form, my_app) :
 
@@ -165,10 +191,8 @@ def create_product(form, my_app) :
         image = request.files[form.prod_image.name]
         image_name = form.prod_name.data + image.filename[-4:]
         form.prod_image.data = image_name
-        print(form.prod_cost.type)
 
         product_tuple = tuple_form(form)
-        print(product_tuple)
         
         image.save(my_app.config['IMAGES'] + image_name)
 
@@ -180,6 +204,38 @@ def create_product(form, my_app) :
     except Exception as e :
         flash(e)
         return -1
+    
+def create_custom(form) :
+
+    try :
+        db = get_db()
+
+        custom_tuple = tuple_form(form)
+        print(custom_tuple)
+        
+        db.execute("INSERT INTO custom (prod_id, custom, custom_desc, require) VALUES (?, ?, ?, ?)", custom_tuple)
+        db.commit()
+        return 0
+
+    except Exception as e :
+        flash(e)
+        return -1
+
+def create_option(form) :
+
+    try :
+        db = get_db()
+
+        option_tuple = tuple_form(form)    
+
+        db.execute('INSERT INTO options (custom_id, option_name, cost_change) VALUES (?, ?, ?)', option_tuple)
+        db.commit()
+        return 0        
+
+    except Exception as e:
+        flash(e)
+        return -1
+
 
 def tuple_form(form) :
     return tuple(field.data if not field.type == "DecimalField" else float(field.data) for field in form if not field.id == "submit")

@@ -43,9 +43,15 @@ class ProductForm(Form) :
     prod_image = FileField("Upload an image")
     submit = SubmitField("Submit")
 
-'''class CustomForm(ProductForm) :
+class CustomForm(Form) :
     prod_id = SelectField("Corresponding product", [validators.DataRequired()], choices=[])
     custom_text = StringField("What are we customizing (ie color or size)", [validators.DataRequired()])
     custom_desc = StringField("Text for customization (customize your color)", [validators.DataRequired()])
-    required = RadioField("Is this a required customization", choices=[("yes", True), ("no",  False)], default="no")
-    cost_change = DecimalField("Price increase from customization", places=2, validators=[validators.DataRequired()])'''
+    required = RadioField("Is this a required customization", choices=[(True, "Yes"), (False,  "No")], default="no")
+    submit = SubmitField("Submit")
+
+class OptionForm(Form) :
+    custom_id = SelectField("Corresponding customization", [validators.DataRequired()], choices=[])
+    option_name = StringField("Name of option (red, blue)", [validators.DataRequired()])
+    cost_change = DecimalField("Price increase", places=2, validators=[validators.DataRequired()])
+    submit = SubmitField("Submit")

@@ -1,5 +1,5 @@
 from JandRCreations.db import (get_db)
-from JandRCreations.auth import (get_user_by_username, get_type_by_typeid, create_design, get_design_by_designid, get_all_designs, create_type, create_product, get_all_types)
+from JandRCreations.auth import *
 from flask import (
     Blueprint, flash, g, redirect, render_template, request, session, url_for, abort, current_app
 )
@@ -53,7 +53,7 @@ def admin_design() :
 def admin_type() : 
     form = TypeForm(request.form) #get the form
     #fill in the choices for the form
-    form.prod_design_id.choices = [(design["prod_design_id"], get_design_by_designid(design["prod_design_id"])['prod_design']) for design in get_all_designs()] 
+    form.prod_design_id.choices = [(design["prod_design_id"], design['prod_design']) for design in get_all_designs()] 
 
     #some extra validation for image uploads are required
     if request.method == "POST" and form.validate() and request.files[form.type_image.name] and request.files[form.type_image.name].filename:
@@ -75,9 +75,9 @@ def admin_product() : #page to add a product
     form = ProductForm(request.form) #create our new product form
 
     #generate the choices dynamically, (typeid, typename)
-    form.type_id.choices = [(types["prod_type_id"], get_type_by_typeid(types["prod_type_id"])['prod_type']) for types in get_all_types()]
+    form.type_id.choices = [(types["prod_type_id"], types['prod_type']) for types in get_all_types()]
 
-    if request.method == "POST" and form.validate : #if the form is submited
+    if request.method == "POST" and form.validate() : #if the form is submited
         if create_product(form, current_app) < 0 : #try and create the new type
             flash("Error adding product") #if it fails flash the errors
         else : #if it succeeds
@@ -85,6 +85,39 @@ def admin_product() : #page to add a product
             return redirect(url_for("admin.admin_home"))
 
     return render_template('admin/product.html', form=form) #redirect to the product page on failure
+
+@bp.route('/custom', methods=('GET', 'POST')) #form to add a product into our database. will need to reference type, and include adding customization options
+@require_login #admin needs to be logged in to upload
+def admin_custom() : #page to add customization to a product
+    
+    form = CustomForm(request.form)
+
+    form.prod_id.choices = [(prod['prod_id'], prod['prod_name']) for prod in get_all_prods()]
+
+    if request.method == 'POST' and form.validate() :
+        if create_custom(form) < 0 :
+            flash("Error adding customization")
+        else :
+            flash("Succesfully added customization (you still need to add options)")
+            return redirect(url_for('admin.admin_home'))
+        
+    return render_template('admin/custom.html', form=form)
+
+@bp.route('/option', methods=('GET', 'POST')) 
+def admin_option() :
+
+    form = OptionForm(request.form)
+
+    form.custom_id.choices = [(option['custom_id'], option['custom'] + ' of ' + get_prod_by_prodid(get_prodid_by_customid(option['custom_id']))['prod_name']) for option in get_all_custom()]
+
+    if request.method == 'POST' and form.validate() :
+        if create_option(form) < 0 :
+            flash('Error adding customization')
+        else :
+            flash("Successfully added customization. Don't forget to add ALL options")
+            return redirect(url_for('admin.admin_home'))
+        
+    return render_template('admin/option.html', form=form)
 
 @bp.route('/login', methods=('GET', 'POST'))
 def login():
