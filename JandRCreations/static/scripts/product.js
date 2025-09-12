@@ -1,12 +1,27 @@
 $(document).ready(function(){ //wait for the document to load    
 
-    selects = $('.cust_name')
+    selects = $('.cust_name') //get all select fields
+    
 
-    selects.each(function(i, obj){
-        var temp = $(this);
-        var tempprev = temp.val();
+    selects.each(function(i, obj){ //for each select field
+        
+        var selector = $(this); //get this select field
+        var selector_prev = selector.val(); //set the previous value of our selector fields (the default value)
+        
+        selector.data("prev", selector_prev); //set the prev value using data functionality
+        
 
-        temp.data("prev", tempprev);
+        let priceformatting = new Intl.NumberFormat('en-US', { //formatting to USD for the price
+            style: 'currency',
+            currency: 'USD',
+        });
+
+        var price_element = $('#prod_price'); //get the price of the product
+        var newprice = parseFloat(price_element.text().substring(1)) + parseFloat(selector.val()); //get the price in float format
+        
+        price_element.html(priceformatting.format(newprice)); //set the starting price
+        
+        
     });
 
     //we need to update the price of the item when choosing different elements
@@ -22,13 +37,12 @@ $(document).ready(function(){ //wait for the document to load
 
         selector.data("prev", selector.val()); //we need to set the new previous value        
 
-        let priceformatting = new Intl.NumberFormat('en-US', {
+        let priceformatting = new Intl.NumberFormat('en-US', { //format the price in USD
             style: 'currency',
             currency: 'USD',
         });
-        selector.data("price", priceformatting.format(newprice));
 
-        price_element.html(priceformatting.format(newprice));
+        price_element.html(priceformatting.format(newprice)); //set the new price
 
     });
 
