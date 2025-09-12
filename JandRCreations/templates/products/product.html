@@ -28,7 +28,7 @@
                 <form class="forms">
                     {{customization['custom_desc']}}
                     <select class="cust_name">
-                        {% if not customization['require'] %} <option value=0>NA</option> {% endif %}
+                        {% if customization['require'] == 'False' %} <option value=0>NA</option> {% endif %}
                         {% for option in cust[customization] %}
                             <option value="{{option['cost_change']}}">{{option['option_name']}}</option>
                         {% endfor %}
