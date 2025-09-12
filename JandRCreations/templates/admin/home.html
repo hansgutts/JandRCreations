@@ -18,6 +18,17 @@
         <a href='{{url_for("admin.admin_product")}}' class="home_links"><div>
             Change/Add Product
         </div></a>
+        <a href='{{url_for("admin.admin_custom")}}' class="home_links"><div>
+            Change/Add Customization
+        </div></a>
+        <a href='{{url_for("admin.admin_option")}}' class="home_links"><div>
+            Change/Add Options
+        </div></a>
         </div>
+    {% for message in get_flashed_messages() %}
+        <p class="message">{{ message }}</p>
+    {% endfor %}
     </div>
+
+    
 {% endblock %}
