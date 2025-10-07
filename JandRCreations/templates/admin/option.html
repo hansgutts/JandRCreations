@@ -1,5 +1,8 @@
-{% extends 'admin_base.html' %}
+{% extends 'admin_form_base.html' %}
 
 {% block formtext %}
     Enter option information
 {% endblock %}
+
+{% block add_action %}{{url_for('admin.add_option')}}{%endblock%}
+{%block delete_action%}{{url_for('admin.remove_option')}}{%endblock%}

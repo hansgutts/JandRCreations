@@ -1,4 +1,13 @@
-{% extends 'admin_base.html' %}
+{% macro display_form(form) -%}
+    {% for field in form %}
+        <div class="form_section">
+            {{field.label}}
+            {{field}}
+        </div>
+    {% endfor %}
+{%- endmacro -%}
+
+{% extends 'admin_form_base.html' %}
 
 {% block title %}Log In{% endblock %}
 
@@ -6,8 +15,14 @@
     <link rel="stylesheet" href="{{url_for('static', filename='css/login.css')}}">
 {% endblock %}
 
-{% block formtext %}
+{% block content %}
 
-    <div id="form_text">Log in to make changes</div>
+    <div id="form_div">
+
+        <div id="form_text">Log in to make changes</div>
+
+        <form id="login" method="POST">
+            {{ display_form(login_form) }}
+        </form>
 
 {% endblock %}

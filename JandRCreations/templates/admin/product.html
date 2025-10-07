@@ -1,7 +1,8 @@
-{% extends 'admin_base.html' %}
+{% extends 'admin_form_base.html' %}
 
 {% block title %}Product Forms{% endblock %}
 
-{% block formtext %}
-    Enter Product Information
-{% endblock %}
+{% block formtext %}Enter Product Information{% endblock %}
+
+{% block add_action %}{{url_for('admin.add_prod')}}{%endblock%}
+{%block delete_action%}{{url_for('admin.remove_prod')}}{%endblock%}

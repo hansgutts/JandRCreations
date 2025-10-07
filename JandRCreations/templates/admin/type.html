@@ -1,5 +1,8 @@
-{% extends 'admin_base.html' %}
+{% extends 'admin_form_base.html' %}
 
 {% block title %}Type Forms{% endblock %}
 
 {% block formtext %}Enter Type Information{% endblock%}
+
+{% block add_action %}{{url_for('admin.add_type')}}{%endblock%}
+{%block delete_action%}{{url_for('admin.remove_type')}}{%endblock%}

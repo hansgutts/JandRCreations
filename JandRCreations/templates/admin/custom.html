@@ -1,5 +1,8 @@
-{% extends 'admin_base.html' %}
+{% extends 'admin_form_base.html' %}
 
 {% block formtext %}
     Enter customization information
 {% endblock %}
+
+{% block add_action %}{{url_for('admin.add_custom')}}{%endblock%}
+{%block delete_action%}{{url_for('admin.remove_custom')}}{%endblock%}
