@@ -1,0 +1,56 @@
+{% macro display_form(form) -%}
+    {% for field in form %}
+        <div class="form_section">
+            {{field.label}}
+            {{field}}
+        </div>
+    {% endfor %}
+{%- endmacro -%}
+
+{% extends 'base.html' %}
+
+{% block stylesheet %}
+    <link rel="stylesheet" href="{{ url_for('static', filename = 'css/admin_form_base.css') }}">
+{% endblock %}
+{% block scripts %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script src="{{url_for('static', filename='scripts/admin.js')}}"></script>
+    
+{% endblock %}
+
+{% block content %}
+
+    <div id="form_div">
+
+        <div id="form_text">{% block formtext %}{% endblock %}</div>
+
+        <form id="addDeleteForm">
+            {% if addDeleteForm %}
+                {{ display_form(addDeleteForm) }}
+            {% endif %}
+        </form>
+
+        
+        {% if addForm %}
+            <form method="POST" enctype="multipart/form-data" id="addForm" name="addForm" action="{%block add_action%}{%endblock%}">
+            
+                {{ display_form(addForm)}}
+            
+            </form>
+        {% endif %}
+
+        {% if deleteForm %}
+            <form method="POST" id="deleteForm" class='hidden' name="deleteForm" action="{%block delete_action%}{%endblock%}">
+            
+                {{ display_form(deleteForm) }}
+            
+            </form>
+        {% endif %}
+        
+            {% for message in get_flashed_messages() %}
+                <p class="message">{{ message }}</p>
+            {% endfor %}
+        
+    </div>
+
+{% endblock %}
