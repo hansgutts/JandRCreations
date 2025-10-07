@@ -49,7 +49,7 @@ def get_all_custom() :
 def get_all_options() :
     db = get_db()
 
-    options = db.execute("SELECT option_id, option_name FROM options").fetchall()
+    options = db.execute("SELECT options_id, option_name FROM options").fetchall()
     return options
 
 
@@ -57,7 +57,7 @@ def get_design_by_designid(designid) : #get design the design by the id, simply 
     db = get_db() #connect
 
     if not (type(designid) is int) : #avoid SQL injection
-        return None
+        return []
 
     #get the design name where design id matches input
     design = db.execute('SELECT prod_design FROM prod_design WHERE prod_design_id = ?', (designid,)).fetchone()
@@ -68,7 +68,7 @@ def get_types_by_designid(designid) : #get the types that fall under a certain d
     db = get_db() #connect
 
     if not (type(designid) is int) : #avoid SQL injection
-        return None
+        return []
 
     #get the ids of the types then get it in a list of ids rather than a list of sql dict rows
     typeIDs = db.execute('SELECT prod_type_id, prod_type  FROM prod_type where prod_design_id = ?', (designid,)).fetchall()
@@ -80,7 +80,7 @@ def get_type_by_typeid(typeid) : #get type info from the id
     db = get_db() #connect
 
     if not (type(typeid) is int) : #avoid SQL injection
-        return None
+        return []
 
     #get the type and description from the db. leave it in a dict to make future access more logical
     types = db.execute('SELECT prod_type_id, prod_type, prod_type_description, prod_type_image FROM prod_type WHERE prod_type_id = ?', (typeid,)).fetchone()
@@ -92,11 +92,12 @@ def get_prods_by_typeid(typeid) : #get the products that full under a certain ty
     db = get_db() #connect
 
     if not (type(typeid) is int) : #avoid SQL injection
-        return None
+        return []
 
     #get the prod info where the type id matches the input. get it a list of ids rather than a list of sql rows
-    prods = db.execute('SELECT prod_id FROM prod WHERE prod_type_id = ?', (typeid,)).fetchall()
-    prods = [row['prod_id'] for row in prods]
+    prods = db.execute('SELECT prod_id, prod_name FROM prod WHERE prod_type_id = ?', (typeid,)).fetchall()
+    prods = [(row['prod_id'], row['prod_name']) for row in prods]
+ 
 
     return prods
 
@@ -104,7 +105,7 @@ def get_prod_by_prodid(prodid) : #get the prod by id
     db = get_db() #connect
 
     if not (type(prodid) is int) : #avoid SQL injection
-        return None
+        return []
 
     #get the prod info where the prod id matched the input. leave it in dict to make future access more logical 
     prod = db.execute('SELECT prod_id, prod_name, prod_description, prod_price, prod_cost, prod_sold, prod_image FROM prod WHERE prod_id = ?', (prodid,)).fetchone()
@@ -119,14 +120,13 @@ def get_prodid_by_customid(id) :
         prod = db.execute("SELECT prod_id FROM custom WHERE custom_id = ?", (id,)).fetchone()['prod_id']
         return prod
     except Exception as e :
-        print('Error ' + str(e))
         return -1
 
 def get_cust_by_prodid(prodid) : #get customization sections based on prodid
     db = get_db() #open the db
 
     if not (type(prodid) is int) : #make sure our prodid is an int (avoid sql injection)
-        return None
+        return []
     
     #get all fields from custom table, makes it easier later since this works the same as a dict
     cust = db.execute('SELECT * FROM custom WHERE custom.prod_id = ?', (prodid,)).fetchall()
@@ -136,7 +136,7 @@ def get_options_by_custid(custid) : #need to get options for the customization
     db = get_db() #connect
 
     if not (type(custid) is int) :
-        return None #avoid sql injection
+        return [] #avoid sql injection
     
     options = db.execute('SELECT * FROM options WHERE options.custom_id = ?', (custid,)).fetchall()
 
@@ -160,6 +160,7 @@ def create_design(form) :
         return 0
 
     except Exception as e:
+        flash(e)
         return -1
     
 def create_type(form, my_app) :
@@ -211,7 +212,6 @@ def create_custom(form) :
         db = get_db()
 
         custom_tuple = tuple_form(form)
-        print(custom_tuple)
         
         db.execute("INSERT INTO custom (prod_id, custom, custom_desc, require) VALUES (?, ?, ?, ?)", custom_tuple)
         db.commit()
@@ -236,8 +236,83 @@ def create_option(form) :
         flash(e)
         return -1
 
+def delete_design(form) :
+    try :
+        db = get_db()
+
+        db.execute('DELETE FROM prod_design WHERE prod_design_id=?', (form.design_id.data,))
+        db.commit()
+
+        return 0
+
+    except Exception as e :
+        flash(e)
+
+        return -1
+    
+def delete_type(form) :
+    try :
+        db = get_db()
+
+        db.execute('DELETE FROM prod_type WHERE prod_type_id=?', (form.type_id.data,))
+        db.commit() 
+
+        return 0
+
+    except Exception as e :
+        flash(e)
+
+        return -1
+    
+def delete_prod(form) :
+    try :
+        db = get_db()
+        
+        db.execute('DELETE from prod WHERE prod_id=?', (form.product_id.data,))
+        db.commit()
+
+        return 0
+    
+    except Exception as e :
+        flash(e)
+
+        return -1
+    
+def delete_cust(form) :
+    try :
+        db = get_db()
+
+        db.execute("DELETE from custom WHERE custom_id=?", (form.custom_id.data,))
+        db.commit()
+
+        return 0
+    except Exception as e :
+        flash(e)
+
+        return -1
+    
+def delete_option(form) :
+    print(form.option_id.data)
+    try :
+        db = get_db()
+
+        db.execute("DELETE from options WHERE options_id=?", (form.option_id.data,))
+        db.commit()
+
+        return 0
+
+    except Exception as e :
+        flash(e)
+
+        return -1
 
 def tuple_form(form) :
     return tuple(field.data if not field.type == "DecimalField" else float(field.data) for field in form if not field.id == "submit")
 
+def get_types_by_design_id(designid) :
+    db = get_db()
 
+    types = db.execute('SELECT prod_type.prod_type_id, prod_type.prod_type FROM prod_design JOIN prod_type ON prod_type.prod_design_id = prod_design.prod_design_id WHERE prod_type.prod_design_id = ?', (designid,)).fetchall()
+    ptypes = [(ptype['prod_type_id'], ptype['prod_type']) for ptype in types]
+    
+    return ptypes
