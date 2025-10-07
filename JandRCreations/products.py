@@ -35,7 +35,8 @@ def view_type(type) : #we need to get each product in each type, if it exists. o
     type = get_type_by_typeid(type)
 
     prods = get_prods_by_typeid(type['prod_type_id'])
-    prods = [get_prod_by_prodid(prodid) for prodid in prods]
+    
+    prods = [get_prod_by_prodid(prodid[0]) for prodid in prods]
 
     if type is not None :    
         return render_template('products/type.html', type=type, prods=prods)#get_type_by_typeid(type)['prod_type']
