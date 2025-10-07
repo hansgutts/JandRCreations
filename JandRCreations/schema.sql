@@ -1,8 +1,11 @@
-DROP TABLE IF EXISTS prod_design;
-DROP TABLE IF EXISTS prod_type;
-DROP TABLE IF EXISTS prod;
-DROP TABLE IF EXISTS custom;
 DROP TABLE IF EXISTS options;
+DROP TABLE IF EXISTS custom;
+DROP TABLE IF EXISTS prod;
+DROP TABLE IF EXISTS prod_type;
+DROP TABLE IF EXISTS prod_design;
+
+
+
 DROP TABLE IF EXISTS user;
 
 CREATE TABLE prod_design (
@@ -15,20 +18,20 @@ CREATE TABLE prod_type (
     prod_type TEXT UNIQUE NOT NULL,
     prod_type_description TEXT NOT NULL,
     prod_type_image TEXT NOT NULL,
-    prod_design_id TEXT NOT NULL,
-    FOREIGN KEY (prod_design_id) REFERENCES prod_design (prod_design_id)
+    prod_design_id INTEGER NOT NULL,
+    FOREIGN KEY (prod_design_id) REFERENCES prod_design (prod_design_id) ON DELETE CASCADE
 );
 
 CREATE TABLE prod (
     prod_id INTEGER PRIMARY KEY AUTOINCREMENT,
-    prod_type_id INTEGER,
+    prod_type_id INTEGER NOT NULL,
     prod_name TEXT UNIQUE NOT NULL,
     prod_description TEXT NOT NULL,
     prod_price REAL NOT NULL,
     prod_cost REAL NOT NULL,
     prod_sold BOOLEAN NOT NULL,
     prod_image TEXT NOT NULL,
-    FOREIGN KEY (prod_type_id) REFERENCES prod_type (prod_type_id)
+    FOREIGN KEY (prod_type_id) REFERENCES prod_type (prod_type_id) ON DELETE CASCADE
 );
 
 CREATE TABLE custom (
@@ -37,7 +40,7 @@ CREATE TABLE custom (
     custom TEXT NOT NULL,
     custom_desc TEXT NOT NULL,
     require BOOLEAN NOT NULL,
-    FOREIGN KEY (prod_id) REFERENCES prod (prod_id)
+    FOREIGN KEY (prod_id) REFERENCES prod (prod_id) ON DELETE CASCADE
 );
 
 CREATE TABLE options (
@@ -45,7 +48,7 @@ CREATE TABLE options (
     custom_id INTEGER NOT NULL,
     cost_change REAL NOT NULL,
     option_name TEXT NOT NULL,
-    FOREIGN KEY (custom_id) REFERENCES custom (custom_id)
+    FOREIGN KEY (custom_id) REFERENCES custom (custom_id) ON DELETE CASCADE
 );
 
 CREATE TABLE user (

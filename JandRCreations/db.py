@@ -9,6 +9,7 @@ def get_db():  #get the db connection for other functions
             detect_types=sqlite3.PARSE_DECLTYPES
         )
         g.db.row_factory = sqlite3.Row
+        g.db.execute("PRAGMA foreign_keys = ON;")
 
     return g.db #get the database out of g, will be in there now if it wasn't before
 
