@@ -292,7 +292,6 @@ def delete_cust(form) :
         return -1
     
 def delete_option(form) :
-    print(form.option_id.data)
     try :
         db = get_db()
 

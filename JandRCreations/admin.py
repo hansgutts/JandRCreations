@@ -363,6 +363,4 @@ def get_options() :
     if options :
         options = [{'id': option['options_id'], 'option':option['option_name']} for option in options]
 
-    print(options)
-
     return options

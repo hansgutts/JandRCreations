@@ -12,8 +12,6 @@ def create_app(test_config=None) : #create the flask app
         #ADMIN_DATABASE = os.path.join(app.instance_path, 'admin.sqlite')
     )
 
-    print(app.config['IMAGES'])
-
     if test_config is None: #if we aren't testing
         app.config.from_pyfile('config.py', silent=True) #use the development config file
     else : #if we are testing
