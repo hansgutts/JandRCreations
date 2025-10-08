@@ -12,7 +12,7 @@
     <nav>
         <div id="top_nav">
             <div id="logo">
-                <a href="{{url_for('index')}}"><img src="{{ url_for('static', filename = 'images/JandRLogo.png')}}" id="logoimg"></a>
+                <a href="{% block homelink %}{{url_for('index')}}{% endblock %}"><img src="{{ url_for('static', filename = 'images/JandRLogo.png')}}" id="logoimg"></a>
             </div>
             <div class="nav_sections"><a href="{{ url_for('other.contact') }}">Contact Us</a></div>
         </div>

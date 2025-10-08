@@ -4,6 +4,8 @@
     <link rel="stylesheet" href="{{url_for('static', filename='css/admin_home.css')}}">
 {% endblock %}
 
+{% block homelink%}{{url_for('admin.admin_home')}}{%endblock%}
+
 
 {% block content %}
     <div id="form_div">
