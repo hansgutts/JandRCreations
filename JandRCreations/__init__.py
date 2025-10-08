@@ -1,16 +1,14 @@
 import os
-from flask import Flask, url_for
+from flask import Flask
+from JandRCreations import config
 
 def create_app(test_config=None) : #create the flask app
-
     app = Flask(__name__, instance_relative_config=True) #initialize the app
-
     app.config.from_mapping( #set the config information. this should be in its own config file
-        SECRET_KEY = 'dev', #this is a key to be used for encryption and shouldn't be able to be accessed by anyone else. also shouldn't be 'dev' at launch
         DATABASE = os.path.join(app.instance_path, 'JandRCreations.sqlite'), #where the db is stored
-        IMAGES = os.path.join(app.static_folder, 'images/')
-        #ADMIN_DATABASE = os.path.join(app.instance_path, 'admin.sqlite')
+        IMAGES = os.path.join(app.static_folder, 'images/') #path to the images folder
     )
+    app.config['SECRET_KEY'] = config.SECRET_KEY #set our secret key
 
     if test_config is None: #if we aren't testing
         app.config.from_pyfile('config.py', silent=True) #use the development config file

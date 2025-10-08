@@ -8,7 +8,7 @@ from JandRCreations.auth import get_type_by_typeid
 bp = flask.Blueprint('other', __name__)
 
 @bp.route('/other/contact')
-def contact() :
+def contact() : #the contact page
     return flask.render_template('other/contact.html')
 
 @bp.route('/') #the home page

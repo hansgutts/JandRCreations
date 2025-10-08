@@ -1,25 +1,26 @@
 
 
 $(document).ready(function(){ //wait for the document to load  
-    var del_form = $('#deleteForm')
-    function update_type_choices() {
-        var design = del_form.find('select[name="design_id"]');
-        $.ajax({
+    var del_form = $('#deleteForm') //we need to only update on the delete form
+    function update_type_choices() { //our function to update choices
+        var design = del_form.find('select[name="design_id"]'); //get the design id select field
+        $.ajax({ //send ajax request to make it dynamic
             url: 'get_types',
             type: 'GET',
             contentType: 'application/json',
-            data: {
+            data: { //send it the design id
                 design_id: design.val()
             },
-            success: function(response) {
-                var types = del_form.find('select[name="type_id"]');
-                types.empty();
+            success: function(response) { //if it suceeded
+                var types = del_form.find('select[name="type_id"]'); //get the types returned
+                types.empty(); //empty the select field options
                 
 
-                if(response) {
-                    $.each(response, function (ind, obj){
+                if(response) { //if we got a response (there may not be if they don't exist in the db)
+                    $.each(response, function (ind, obj){ //loop through the response
+                        //manually create the option values
                         var appendVal = '<option value="' + String(obj['id']) + '">' + String(obj['type']) + '</option>';
-                        types.append(appendVal);
+                        types.append(appendVal); //insert them into the select field
                     })
                 }
             update_prod_choices();
@@ -98,19 +99,17 @@ $(document).ready(function(){ //wait for the document to load
         })
     }
 
+    //when the select fields change call their relative function
     del_form.find('select[name="design_id"]').change(function() {
         update_type_choices();
-        //update_prod_choices();
     })
 
     del_form.find('select[name="type_id"]').change(function() {
         update_prod_choices();
-        //update_cust_choices();
     })
 
     del_form.find('select[name="product_id"]').change(function(){
         update_cust_choices();
-        //update_option_choices();
     })
 
     del_form.find('select[name="custom_id"]').change(function() {
@@ -118,7 +117,7 @@ $(document).ready(function(){ //wait for the document to load
     })
 
 
-
+    //get document elements needed to change between adding and deleting
     var addDelete = $("#addDeleteForm")
     var addDeleteField = $('input[name="addDelete"]:checked');
     var addForm = $('#addForm');
@@ -127,18 +126,20 @@ $(document).ready(function(){ //wait for the document to load
     var formTextBox = $('#form_text')
     var FORMTEXTVALUE = formTextBox.html()
 
+    //when add or delete is selected
     addDelete.change(function(data) {
+        //determine whether we are becoming add or delete
         addDeleteField = $('input[name="addDelete"]:checked');
-        if (addDeleteField.val() == 'Add') {
-            addForm.removeClass('hidden')
-            deleteForm.addClass('hidden')
+        if (addDeleteField.val() == 'Add') { //if we need to add
+            addForm.removeClass('hidden') //make addform not hidden
+            deleteForm.addClass('hidden') //hide the delete form
 
-            formTextBox.html(FORMTEXTVALUE)
-
+            formTextBox.html(FORMTEXTVALUE) //update the instructions ("add/delete item")
+        // if deleting
         } else if (addDeleteField.val() == 'Delete') { 
-            deleteForm.removeClass('hidden')
-            addForm.addClass('hidden')
-
+            deleteForm.removeClass('hidden') //make deleteform not hidden
+            addForm.addClass('hidden') //hide the add form
+            //update instructions
             formTextBox.html("Choose which element to delete")
 
         }

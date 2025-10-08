@@ -56,7 +56,7 @@ def view_product(product): #get the information about the product, if it exists.
     cust = {tempcust:get_options_by_custid(tempcust['custom_id']) for tempcust in cust}
 
 
-    if prod is not None :
+    if prod is not None : #if there is a product
         return render_template('products/product.html', prod=prod, cust=cust)
-    else :
+    else : #if there is no product return an error
         abort(404)

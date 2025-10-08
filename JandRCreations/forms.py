@@ -44,7 +44,7 @@ class CustomForm(Form) :
 class OptionForm(Form) :
     custom_id = SelectField("Corresponding customization", [validators.DataRequired()], choices=[])
     option_name = StringField("Name of option (red, blue)", [validators.DataRequired()])
-    cost_change = DecimalField("Price increase", places=2, validators=[validators.DataRequired()])
+    cost_change = DecimalField("Price increase", places=2, validators=[validators.InputRequired()])
     submit = SubmitField("Submit")
 
 class DeleteDesign(Form) :
