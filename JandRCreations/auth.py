@@ -168,7 +168,6 @@ def create_design(form) : #create a design element from provided form
         flash("Error entry already exists") #let the user know they are trying to make a duplicate
         return -1 
     except Exception as e: #otherwise print generic error and return failure
-        flash(e)
         db.rollback()
         return -1
     
@@ -195,7 +194,6 @@ def create_type(form, my_app) : #create a type element from provided form
         return -1 
 
     except Exception as e :
-        flash(e)
         db.rollback()
         return -1
     
@@ -221,7 +219,7 @@ def create_product(form, my_app) : #create product
         flash("Error entry already exists")
         return -1 
     except Exception as e :
-        flash(e)
+        
         db.rollback()
         return -1
     
@@ -239,7 +237,7 @@ def create_custom(form) : #create customization element
         flash("Error entry already exists")
         return -1 
     except Exception as e :
-        flash(e)
+        
         db.rollback()
         return -1
 
@@ -257,7 +255,7 @@ def create_option(form) : #create an option form
         flash("Error entry already exists")
         return -1 
     except Exception as e:
-        flash(e)
+        
         db.rollback()
         return -1
 
@@ -274,7 +272,7 @@ def delete_design(form) : #delete design based on id
         flash("Error entry needed for database integrity")
         return -1 
     except Exception as e :
-        flash(e)
+        
         db.rollback()
         return -1
     
@@ -292,7 +290,7 @@ def delete_type(form) : #delete the type based on type id
         flash("Error entry needed for database integrity")
         return -1 
     except Exception as e :
-        flash(e)
+        
         db.rollback()
         return -1
     
@@ -310,7 +308,7 @@ def delete_prod(form) :
         flash("Error entry needed for database integrity")
         return -1 
     except Exception as e :
-        flash(e)
+        
         db.rollback()
         return -1
     
@@ -327,7 +325,7 @@ def delete_cust(form) : #delete customization based on id
         flash("Error entry needed for database integrity")
         return -1 
     except Exception as e :
-        flash(e)
+        
         db.rollback()
         return -1
     
@@ -344,7 +342,7 @@ def delete_option(form) : #delete option based on id
         flash("Error entry needed for database integrity")
         return -1 
     except Exception as e :
-        flash(e)
+        
         db.rollback()
         return -1
 

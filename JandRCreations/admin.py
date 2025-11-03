@@ -317,7 +317,6 @@ def login():
     if request.method == 'POST' and form.validate() :
         #get the user name from the submitted form
         user = get_user_by_username(form.username.data) 
-       
         #if there is no user matching the username input
         if user is None :
             flash('Something was incorrect, try again')

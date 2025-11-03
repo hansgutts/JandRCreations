@@ -28,3 +28,4 @@ def index() :  #get every design and every type and send those through to the in
         return redirect(url_for('products.view_type', type = types[0]['prod_type_id']))
  
     return render_template('other/index.html', designdict=designdict) #render home page and send it the designs and types
+
