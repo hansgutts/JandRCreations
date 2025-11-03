@@ -25,4 +25,8 @@
             {{ display_form(login_form) }}
         </form>
 
+    {% for message in get_flashed_messages() %}
+                <p class="message">{{ message }}</p>
+            {% endfor %}
+
 {% endblock %}
