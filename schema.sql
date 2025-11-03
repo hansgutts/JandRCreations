@@ -56,3 +56,4 @@ CREATE TABLE user (
     userpassword TEXT NOT NULL
 ); 
 
+INSERT INTO user (username, userpassword) VALUES ('rfleming115', 'scrypt:32768:8:1$cHG7j64o4QDN6hBK$0004dfc914326eca39b65461f7de4f3cb1a33172ea41f9a8daf3619d7b0ee3bb8b934bd0fcc8c7b3b4084c76420a8de01890eb8aca5baa7ec45b886295f589fd')
