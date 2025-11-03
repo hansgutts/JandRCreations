@@ -1,11 +1,12 @@
 
 
 $(document).ready(function(){ //wait for the document to load  
+
     var del_form = $('#deleteForm') //we need to only update on the delete form
     function update_type_choices() { //our function to update choices
         var design = del_form.find('select[name="design_id"]'); //get the design id select field
         $.ajax({ //send ajax request to make it dynamic
-            url: 'get_types',
+            url: SCRIPT_ROOT + 'get_types',
             type: 'GET',
             contentType: 'application/json',
             data: { //send it the design id
@@ -32,7 +33,7 @@ $(document).ready(function(){ //wait for the document to load
     function update_prod_choices() {
         var select = del_form.find('select[name="type_id"]');
         $.ajax({
-            url: "get_prods",
+            url: SCRIPT_ROOT + "get_prods",
             type: 'GET',
             contentType: 'application/json',
             data: {
@@ -55,7 +56,7 @@ $(document).ready(function(){ //wait for the document to load
     function update_cust_choices() {
         var select = del_form.find('select[name="product_id"]');
         $.ajax({
-            url: "get_customs",
+            url: SCRIPT_ROOT + "get_customs",
             type: "GET",
             contentType: 'application/json',
             data: {
@@ -79,7 +80,7 @@ $(document).ready(function(){ //wait for the document to load
     function update_option_choices() {
         var select = del_form.find('select[name="custom_id"]');
         $.ajax({
-            url: "get_options",
+            url: SCRIPT_ROOT + "get_options",
             type: "GET",
             contentType: 'application/json',
             data: {
